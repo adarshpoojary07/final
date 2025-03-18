@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Run Postman Tests') {
             steps {
-                bat 'newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export "E:/Study_Material/POSTMAN/POSTMAN Collections/newman/final.html"'
+                bat 'newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export "E:/Study_Material/POSTMAN/POSTMAN Collections/newman/final2.html"'
             }
         }
         stage('Publish HTML Report') {
