@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/adarshpoojary07/pipeline.git', branch: 'main'
+                git url: 'https://github.com/adarshpoojary07/final.git', branch: 'main'
             }
         }
         stage('Install Newman Reporter') {
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Run Postman Tests') {
             steps {
-                bat 'newman run 8.API_Chaining.json -e postman_environment.json --reporters cli,htmlextra --reporter-htmlextra-export "E:/Study_Material/POSTMAN/POSTMAN Collections/newman/Results.html"'
+                bat 'newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export "E:\Study_Material\POSTMAN\POSTMAN Collections\newman\final.html"'
             }
         }
         stage('Publish HTML Report') {
