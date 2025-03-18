@@ -16,7 +16,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export "E:\Study_Material\POSTMAN\POSTMAN Collections\newman\final3.html"
+          newman run newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export final3.html
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
