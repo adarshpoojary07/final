@@ -1,0 +1,25 @@
+name: Run Postman Tests
+
+on: [push, pull_request]
+
+jobs:
+  postman-tests: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Newman & HTML Reporter
+        run: |
+          npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Postman Collection
+        run: |
+          newman run newman run "2.Response validation Status code.postman_collection.json" -e "postman_environment.json" -n 2 --reporters cli,htmlextra --reporter-htmlextra-export "E:\Study_Material\POSTMAN\POSTMAN Collections\newman\final3.html"
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-html-report
+          path: final3.html
