@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "a49a32a3-1740-40bf-8e5c-4a27d25bf991",
+		"name": "2.Response validation Status code Copy 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10034070"
+	},
+	"item": [
+		{
+			"name": "Create new employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\",()=>{\r",
+							"    pm.response.to.have.status(201)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status is 201 or 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201])\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status is Created\",()=>{\r",
+							"    pm.response.to.have.status(\"Created\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Header is present\",()=>{\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Header value is present\",()=>{\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Cookie is present\",()=>{\r",
+							"    pm.expect(pm.cookies.has(\"Gps\")).to.be.false;\r",
+							"})\r",
+							"\r",
+							"/*pm.test(\"Cookie value is present\",()=>{\r",
+							"    pm.expect(pm.cookies.get(\"Gps\")).to.eql(\"1\")\r",
+							"})*/\r",
+							"\r",
+							"pm.test(\"Time is above 1ms\",()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(1)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Time is below 100ms\",()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100)\r",
+							"})\r",
+							"\r",
+							"var jsonData=pm.response.json();\r",
+							"pm.test(\"Property is present\",function(){\r",
+							"pm.expect(jsonData).to.have.property(\"id\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validating Data\",function(){\r",
+							"pm.expect(jsonData.Role).to.eql(\"Engineer\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Text is present\",function(){\r",
+							"pm.expect(pm.response.text()).to.include(\"false\")\r",
+							"})\r",
+							"\r",
+							"var jsonData=pm.response.json();\r",
+							"pm.test(\"Capturing ID\",function(){\r",
+							"pm.environment.set(\"id\",jsonData.id)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/*var randomname=Math.random().toString(36).substring(2)\r",
+							"//var username=\"Adarsh\"+randomname;\r",
+							"var lettersOnly = randomname.replace(/[0-9]/g, ''); \r",
+							"var username = \"Adarsh\" + lettersOnly;\r",
+							"pm.collectionVariables.set(\"user\",username);*/\r",
+							"\r",
+							"\r",
+							"var apple=Math.random().toString(36).substring(2);\r",
+							"var fix=apple.replace(/[0-9]/g, '')\r",
+							"//var username=\"Adarsh\"+fix;\r",
+							"//var email=\"Adarsh\"+fix+\"@gmail.com\";\r",
+							"\r",
+							"pm.environment.set(\"username\",\"Adarsh\" + fix)\r",
+							"pm.environment.set(\"email\",\"Adarsh\" + fix + \"@gmail.com\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\":\"{{username}}\",\r\n        \"Role\":\"Engineer\",\r\n        \"email\":\"{{email}}\",\r\n        \"Phonenumber\": [\r\n            94587,\r\n            25236\r\n        ],\r\n        \"Salary\":false,\r\n        \"Bonus\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/Employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var apple={\r",
+							"    //\"$schema\": \"https://json-schema.org/draft/2019-09/schema\",\r",
+							"    //\"$id\": \"http://example.com/example.json\",\r",
+							"    \"type\": \"object\",\r",
+							"    \"default\": {},\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"required\": [\r",
+							"        \"id\",\r",
+							"        \"name\",\r",
+							"        \"Role\",\r",
+							"        \"email\",\r",
+							"        \"Phonenumber\",\r",
+							"        \"Salary\",\r",
+							"        \"Bonus\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"id\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The id Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"eac3\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"name\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The name Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"Adarshksuzw\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"Role\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The Role Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"Engineer\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"email\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The email Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"Adarshksuzw@gmail.com\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"Phonenumber\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"default\": [],\r",
+							"            \"title\": \"The Phonenumber Schema\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"integer\",\r",
+							"                \"title\": \"A Schema\",\r",
+							"                \"examples\": [\r",
+							"                    94587,\r",
+							"                    25236\r",
+							"                ]\r",
+							"            },\r",
+							"            \"examples\": [\r",
+							"                [94587,\r",
+							"                    25236\r",
+							"                ]\r",
+							"            ]\r",
+							"        },\r",
+							"        \"Salary\": {\r",
+							"            \"type\": \"boolean\",\r",
+							"            \"default\": false,\r",
+							"            \"title\": \"The Salary Schema\",\r",
+							"            \"examples\": [\r",
+							"                false\r",
+							"            ]\r",
+							"        },\r",
+							"        \"Bonus\": {\r",
+							"            \"type\": \"null\",\r",
+							"            \"default\": null,\r",
+							"            \"title\": \"The Bonus Schema\",\r",
+							"            \"examples\": [\r",
+							"                null\r",
+							"            ]\r",
+							"        }\r",
+							"    },\r",
+							"    \"examples\": [{\r",
+							"        \"id\": \"eac3\",\r",
+							"        \"name\": \"Adarshksuzw\",\r",
+							"        \"Role\": \"Engineer\",\r",
+							"        \"email\": \"Adarshksuzw@gmail.com\",\r",
+							"        \"Phonenumber\": [\r",
+							"            94587,\r",
+							"            25236\r",
+							"        ],\r",
+							"        \"Salary\": false,\r",
+							"        \"Bonus\": null\r",
+							"    }]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Valid schema\",()=>{\r",
+							"    pm.response.to.have.jsonSchema(apple)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/Employee/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get info of Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successfull request\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"ID is corrrect\",()=>{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id\"))\r",
+							"})\r",
+							"\r",
+							"console.log(pm.response.text());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/Employee/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Employees details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*var jsonData=pm.response.json()\r",
+							"jsonData.forEach(jsonData => {\r",
+							"    pm.test(\"validating data type for each object \",()=>{\r",
+							"        pm.expect(jsonData).to.be.an(\"object\")\r",
+							"        pm.expect(jsonData.id).to.be.a(\"string\")\r",
+							"        pm.expect(jsonData.name).to.be.a(\"string\")\r",
+							"        pm.expect(jsonData.Role).to.be.a(\"string\")\r",
+							"        pm.expect(jsonData.Phonenumber).to.be.an(\"array\")\r",
+							"        pm.expect(jsonData.Phonenumber[0]).to.be.a(\"number\")\r",
+							"        //pm.expect(jsonData[0].Phonenumber[0,1]).to.include([1234,4569])\r",
+							"        pm.expect(jsonData.Salary).to.be.a(\"Boolean\")\r",
+							"        pm.expect(jsonData.Bonus).to.be.a(\"null\")\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"validating jsonfield for one object \",()=>{\r",
+							"        //pm.expect(jsonData[0].id).to.eql()\r",
+							"        pm.expect(jsonData[0].name).to.eql(\"Adarsh Poojary\")\r",
+							"        pm.expect(jsonData[0].Role).to.eql(\"Senior Engineer\")\r",
+							"        pm.expect(jsonData[0].Phonenumber[0]).to.eql(1234)\r",
+							"        //pm.expect(jsonData.Phonenumber[0]).to.be.a(\"number\")\r",
+							"        //pm.expect(jsonData[0].Phonenumber[0,1]).to.include([1234,4569])\r",
+							"        pm.expect(jsonData[0].Salary).to.eql(true)\r",
+							"        pm.expect(jsonData[0].Bonus).to.eql(null)\r",
+							"    });*/\r",
+							"\r",
+							"\r",
+							"pm.test(\"successfully retrieved all data\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"validating jsonfield for one object \",()=>{\r",
+							"    //pm.expect(jsonData[0].name).to.eql(\"Adarshmzleehy\")\r",
+							"    pm.expect(jsonData[0].Salary).to.eql(false)\r",
+							"})\r",
+							"\r",
+							"var oman=pm.response.json();\r",
+							"oman.forEach(oman=>{\r",
+							"pm.test(\"Valaidating datatype succes\",()=>{\r",
+							"    pm.expect(oman.id).to.be.a(\"string\")\r",
+							"    pm.expect(oman.Salary).to.be.a(\"Boolean\")\r",
+							"    })\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/Employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update info of employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update successfull\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"ID is corrrect\",()=>{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id\"))\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var apple=Math.random().toString(36).substring(2);\r",
+							"var fix=apple.replace(/[0-9]/g, '')\r",
+							"//var username=\"Adarsh\"+fix;\r",
+							"//var email=\"Adarsh\"+fix+\"@gmail.com\";\r",
+							"\r",
+							"pm.environment.set(\"username\",\"Adarsh\" + fix)\r",
+							"pm.environment.set(\"email\",\"Adarsh\" + fix + \"@gmail.com\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{username}}\",\r\n        \"email\":\"{{email}}\",\r\n        \"Salary\":true\r\n        \r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/Employee/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Dleted\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.environment.unset(\"id\")\r",
+							"\r",
+							"pm.environment.unset(\"username\")\r",
+							"\r",
+							"pm.environment.unset(\"email\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/Employee/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Employee",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "no",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "naam",
+			"value": ""
+		},
+		{
+			"key": "user",
+			"value": ""
+		}
+	]
+}
