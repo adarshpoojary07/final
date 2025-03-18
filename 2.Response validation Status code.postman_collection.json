@@ -13,7 +13,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status is 201\",()=>{\r",
+							"pm.test(\"Status  is 201\",()=>{\r",
 							"    pm.response.to.have.status(201)\r",
 							"})\r",
 							"\r",
